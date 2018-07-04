@@ -59,10 +59,8 @@ public class PostgresIntervalLock extends JdbcIntervalLock {
         .append(getValueName(tableConfig.getName()))
         .append(",")
         .append(getValueName(tableConfig.getOwner()))
-        .append(",")
-        .append(getValueName(tableConfig.getAt()))
-        .append(",")
-        .append(getValueName(tableConfig.getTill()))
+        .append(",NOW(),")
+        .append("NOW() + :" + tableConfig.getTill() + "* interval '1 second'")
         .append(")\n")
         .append("ON CONFLICT DO NOTHING")
         .toString();
@@ -73,9 +71,7 @@ public class PostgresIntervalLock extends JdbcIntervalLock {
     MapSqlParameterSource parameterSource = new MapSqlParameterSource();
     parameterSource.addValue(tableConfig.getName(), lockConfig.getName());
     parameterSource.addValue(tableConfig.getOwner(), lockConfig.getOwner());
-    parameterSource.addValue(tableConfig.getAt(), "now()");
-    parameterSource.addValue(tableConfig.getTill(),
-        "now() + " + lockConfig.getDuration() + " * interval '1 second'");
+    parameterSource.addValue(tableConfig.getTill(), lockConfig.getDuration());
     KeyHolder keyHolder = new GeneratedKeyHolder();
     jdbcTemplate.update(tryLockSql, parameterSource, keyHolder);
     return !(keyHolder.getKeys() == null || keyHolder.getKeys().isEmpty());

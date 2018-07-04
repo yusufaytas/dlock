@@ -1,10 +1,13 @@
 package com.yusufaytas.dlock.spring;
 
+
 import com.yusufaytas.dlock.TryLock;
 import com.yusufaytas.dlock.core.IntervalLock;
 import com.yusufaytas.dlock.core.LockConfig;
+import com.yusufaytas.dlock.core.LockRegistry;
 import com.yusufaytas.dlock.core.UnreachableLockException;
 import java.lang.reflect.Method;
+import java.util.Optional;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,18 +15,22 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-@Profile("!test")
-public class TryLockAspect {
+public class IntervalLockRegistrar {
 
-  private final static Logger logger = LoggerFactory.getLogger(TryLockAspect.class);
+  private final static Logger logger = LoggerFactory.getLogger(IntervalLockRegistrar.class);
 
-  @Autowired
-  private IntervalLock intervalLock;
+  @Autowired(required = false)
+  public IntervalLockRegistrar(IntervalLock intervalLock) {
+    if(intervalLock == null){
+      logger.warn("Couldn't find any IntervalLock bean to register.");
+      return;
+    }
+    LockRegistry.setLock(intervalLock);
+  }
 
   @Around("@annotation(com.yusufaytas.dlock.TryLock)")
   public void tryLock(ProceedingJoinPoint joinPoint)
@@ -39,8 +46,12 @@ public class TryLockAspect {
 
   private boolean shouldProceed(TryLock tryLock) {
     try {
+      Optional<IntervalLock> lock = LockRegistry.getLock();
+      if (!lock.isPresent()) {
+        return true;
+      }
       LockConfig config = new LockConfig(tryLock.name(), tryLock.owner(), tryLock.lockFor());
-      return intervalLock.tryLock(config);
+      return lock.get().tryLock(config);
     } catch (UnreachableLockException e) {
       logger.error("Couldn't lock due to lock provider", e);
       return false;

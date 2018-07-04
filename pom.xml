@@ -10,6 +10,9 @@
 
   <properties>
     <spring.version>5.0.4.RELEASE</spring.version>
+    <aspectj.version>1.9.1</aspectj.version>
+    <slf4j.version>1.7.25</slf4j.version>
+    <java.source-target.version>1.8</java.source-target.version>
   </properties>
 
   <licenses>

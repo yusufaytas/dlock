@@ -17,9 +17,8 @@ public class SpringLockExample {
   }
 
   @Scheduled(cron = "*/1 * * * * *")
-  @TryLock(name = "something", lockFor = 1234)
-  public void ultimateLock() {
+  @TryLock(name = "example", owner = "dlock", lockFor = 10)
+  public void exampleLock() {
     System.out.println("lock works");
   }
-
 }
