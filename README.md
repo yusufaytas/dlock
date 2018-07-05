@@ -15,18 +15,20 @@ Feedback and pull-requests are welcome!
 * Java 8
 * slf4j-api
 
+Note that, there should be only one global lock.
+
 ### Import project
 #### maven
 ```xml
 <dependency>
     <groupId>com.yusufaytas.dlock</groupId>
     <artifactId>dlock-spring</artifactId>
-    <version>1.0.0</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 #### gradle
 ```groovy
-testCompile 'junit:junit:4.12'
+testCompile 'com.yusufaytas.dlock:dlock-spring:0.1.0'
 ```
 ## Lock Implementations
 ### Postgres
