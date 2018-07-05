@@ -4,4 +4,30 @@ DLock
 
 DLock is a library to get a distributed interval lock. An Interval Lock is a lock where the acquirer acquires the lock for a certain amount of time. Once the lock is acquired, it won't be released till the interval ends.
 
-Feedback and pull-requests welcome!
+Feedback and pull-requests are welcome!
++ [Usage](#usage)
++ [Lock Implementations](#lock-implementations)
+  - [Postgres](#postgres)
++ [Contributing](#contributing)
+
+## Usage
+### Requirements and dependencies
+* Java 8
+* slf4j-api
+
+### Import project
+#### maven
+```xml
+<dependency>
+    <groupId>com.yusufaytas.dlock</groupId>
+    <artifactId>dlock-spring</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+#### gradle
+```groovy
+testCompile 'junit:junit:4.12'
+```
+## Lock Implementations
+### Postgres
+We insert into postgres if there doesn't exist a lock. 
