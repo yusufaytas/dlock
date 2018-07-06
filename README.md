@@ -10,14 +10,14 @@ Feedback and pull-requests are welcome!
   - [Postgres](#postgres)
 + [Contributing](#contributing)
 
-## Usage
-### Requirements and dependencies
+# Usage
+## Requirements and dependencies
 * Java 8
 * slf4j-api
 
 Note that, there should be only one global lock.
 
-### Import project
+## Import project
 #### maven
 ```xml
 <dependency>
@@ -25,11 +25,33 @@ Note that, there should be only one global lock.
     <artifactId>dlock-spring</artifactId>
     <version>0.1.0</version>
 </dependency>
+<dependency>
+    <groupId>com.yusufaytas.dlock</groupId>
+    <artifactId>dlock-jdbc</artifactId>
+    <version>0.1.0</version>
+</dependency>
 ```
 #### gradle
 ```groovy
-testCompile 'com.yusufaytas.dlock:dlock-spring:0.1.0'
+compile 'com.yusufaytas.dlock:dlock-spring:0.1.0'
+compile 'com.yusufaytas.dlock:dlock-jdbc:0.1.0'
 ```
-## Lock Implementations
-### Postgres
+## Add a Interval Lock Support
+#### spring bean config
+An example lock support for Postgres can be added as follows
+```xml
+<bean id="postgresLock" class="com.yusufaytas.dlock.jdbc.PostgresIntervalLock">
+  <constructor-arg type="javax.sql.DataSource" ref="lockDataSource"/>
+</bean>
+```
+#### Java Code
+```java
+@Scheduled(cron = "*/1 * * * * *")
+@TryLock(name = "example", owner = "dlock", lockFor = 10)
+public void exampleLock() {
+  System.out.println("lock works");
+}
+```
+# Lock Implementations
+## Postgres
 We insert into postgres if there doesn't exist a lock. 
