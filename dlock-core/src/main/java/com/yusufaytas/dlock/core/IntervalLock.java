@@ -6,8 +6,8 @@ package com.yusufaytas.dlock.core;
 public interface IntervalLock {
 
   /**
-   * Returns true if it's able to acquire the lock specified by {@param lockConfig}
-   * @param lockConfig
+   * Returns true if it's able to acquire the lock specified by lockConfig
+   * @param lockConfig config for the lock
    * @return
    */
   boolean tryLock(LockConfig lockConfig) throws UnreachableLockException;

@@ -8,6 +8,7 @@
 .project
 .settings/
 */target/**
+/target
 # BlueJ files
 *.ctxt
 
