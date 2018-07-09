@@ -1,5 +1,7 @@
 package com.yusufaytas.dlock.spring;
 
+import static com.yusufaytas.dlock.Intervals.ONE_MINUTE;
+
 import com.yusufaytas.dlock.TryLock;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +19,7 @@ public class SpringLockExample {
   }
 
   @Scheduled(cron = "*/1 * * * * *")
-  @TryLock(name = "example", owner = "dlock", lockFor = 10)
+  @TryLock(name = "example", owner = "dlock", lockFor = ONE_MINUTE)
   public void exampleLock() {
     System.out.println("lock works");
   }
