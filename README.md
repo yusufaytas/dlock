@@ -37,7 +37,7 @@ compile 'com.yusufaytas.dlock:dlock-spring:0.1.0'
 compile 'com.yusufaytas.dlock:dlock-jdbc:0.1.0'
 ```
 ## Add a Interval Lock Support
-#### spring bean config
+#### Spring Bean Config
 An example lock support for Postgres can be added as follows
 ```xml
 <bean id="postgresLock" class="com.yusufaytas.dlock.jdbc.PostgresIntervalLock">
@@ -47,7 +47,7 @@ An example lock support for Postgres can be added as follows
 #### Java Code
 ```java
 @Scheduled(cron = "*/1 * * * * *")
-@TryLock(name = "example", owner = "dlock", lockFor = 10)
+@TryLock(name = "example", owner = "dlock", lockFor = ONE_MINUTE)
 public void exampleLock() {
   System.out.println("lock works");
 }
