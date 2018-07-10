@@ -8,6 +8,20 @@
   <version>0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <name>DLock</name>
+  <description>Distributed Interval Lock</description>
+  <url>https://github.com/yusufaytas/dlock</url>
+  <scm>
+    <url>https://github.com/yusufaytas/dlock</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <name>Yusuf Aytas</name>
+      <url>http://yusufaytas.com</url>
+    </developer>
+  </developers>
+
   <properties>
     <spring.version>5.0.4.RELEASE</spring.version>
     <aspectj.version>1.9.1</aspectj.version>
