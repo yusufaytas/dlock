@@ -8,6 +8,7 @@ Feedback and pull-requests are welcome!
 + [Usage](#usage)
 + [Lock Implementations](#lock-implementations)
   - [Postgres](#postgres)
+  - [MySQL](#mysql)
 + [Contributing](#contributing)
 
 # Usage
