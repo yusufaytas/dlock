@@ -146,8 +146,8 @@
           <excludes>
             <exclude>**/README</exclude>
             <exclude>src/test/resources/**</exclude>
+            <exclude>src/main/resources/**</exclude>
             <exclude>**/*.xml</exclude>
-            <exclude>**/*.properties</exclude>
           </excludes>
         </configuration>
         <executions>

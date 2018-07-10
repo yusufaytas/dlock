@@ -11,3 +11,4 @@ branches:
 after_success:
   - mvn clean test -Dgpg.skip
   - mvn clean cobertura:cobertura coveralls:report -Dgpg.skip
+  - mvn license:check
