@@ -132,6 +132,32 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>3.0</version>
+        <configuration>
+          <header>license-header.txt</header>
+          <properties>
+            <owner>Yusuf Aytas</owner>
+            <email>yusufaytas@gmail.com</email>
+            <project.inceptionYear>2018</project.inceptionYear>
+          </properties>
+          <excludes>
+            <exclude>**/README</exclude>
+            <exclude>src/test/resources/**</exclude>
+            <exclude>**/*.xml</exclude>
+            <exclude>**/*.properties</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
