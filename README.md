@@ -48,7 +48,7 @@ or you can import all
 ```groovy
 compile 'com.yusufaytas.dlock:dlock-all:0.1'
 ```
-## Add a Interval Lock Support
+## Add an Interval Lock Support
 #### Spring Bean Config
 An example lock support for Postgres can be added as follows
 ```xml
