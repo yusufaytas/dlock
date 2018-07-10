@@ -9,7 +9,7 @@
   <packaging>pom</packaging>
 
   <name>DLock</name>
-  <description>Distributed Interval Lock</description>
+  <description>Interval Lock</description>
   <url>https://github.com/yusufaytas/dlock</url>
   <scm>
     <url>https://github.com/yusufaytas/dlock</url>
