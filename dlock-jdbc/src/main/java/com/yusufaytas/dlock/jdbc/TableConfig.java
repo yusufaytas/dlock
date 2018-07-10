@@ -13,8 +13,7 @@ public class TableConfig {
   private String name = "name";
   private String owner = "owner";
 
-  public TableConfig() {
-  }
+  public TableConfig() {}
 
   public TableConfig(String id, String schema, String table, String at, String till, String name,
       String owner) {

@@ -10,27 +10,21 @@ import org.springframework.jdbc.support.KeyHolder;
 
 public class PostgresIntervalLock extends JdbcIntervalLock {
 
-  private String tryLockSql;
-
   public PostgresIntervalLock(DataSource dataSource) {
     super(dataSource);
-    buildTryLockSql(tableConfig);
   }
 
   public PostgresIntervalLock(
       NamedParameterJdbcTemplate jdbcTemplate) {
     super(jdbcTemplate);
-    buildTryLockSql(tableConfig);
   }
 
   public PostgresIntervalLock(DataSource dataSource, TableConfig tableConfig) {
     super(dataSource, tableConfig);
-    buildTryLockSql(tableConfig);
   }
 
   public PostgresIntervalLock(NamedParameterJdbcTemplate jdbcTemplate, TableConfig tableConfig) {
     super(jdbcTemplate, tableConfig);
-    buildTryLockSql(tableConfig);
   }
 
   private String getSafeName(String name) {
@@ -41,39 +35,38 @@ public class PostgresIntervalLock extends JdbcIntervalLock {
     return ":" + name;
   }
 
-  private void buildTryLockSql(TableConfig tableConfig) {
-    tryLockSql = new StringBuilder().append("INSERT INTO ")
+  @Override
+  protected String buildTryLockSql(TableConfig tableConfig) {
+    return new StringBuilder().append("INSERT INTO ")
         .append(getSafeName(tableConfig.getSchema()))
         .append(".")
         .append(getSafeName(tableConfig.getTable()))
         .append(" (")
         .append(getSafeName(tableConfig.getName()))
-        .append(",")
+        .append(", ")
         .append(getSafeName(tableConfig.getOwner()))
-        .append(",")
+        .append(", ")
         .append(getSafeName(tableConfig.getAt()))
-        .append(",")
+        .append(", ")
         .append(getSafeName(tableConfig.getTill()))
         .append(")\n")
         .append("VALUES(")
         .append(getValueName(tableConfig.getName()))
-        .append(",")
+        .append(", ")
         .append(getValueName(tableConfig.getOwner()))
-        .append(",NOW(),")
-        .append("NOW() + :" + tableConfig.getTill() + "* interval '1 second'")
+        .append(", NOW(), ")
+        .append("NOW() + :" + tableConfig.getTill() + " * interval '1 second'")
         .append(")\n")
         .append("ON CONFLICT DO NOTHING")
         .toString();
   }
 
   @Override
-  public boolean tryLock(LockConfig lockConfig) throws UnreachableLockException {
-    MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-    parameterSource.addValue(tableConfig.getName(), lockConfig.getName());
-    parameterSource.addValue(tableConfig.getOwner(), lockConfig.getOwner());
-    parameterSource.addValue(tableConfig.getTill(), lockConfig.getDuration());
+  public boolean tryLock(final LockConfig lockConfig) throws UnreachableLockException {
+    MapSqlParameterSource parameterSource = getParams(lockConfig);
     KeyHolder keyHolder = new GeneratedKeyHolder();
     jdbcTemplate.update(tryLockSql, parameterSource, keyHolder);
     return !(keyHolder.getKeys() == null || keyHolder.getKeys().isEmpty());
   }
+
 }
