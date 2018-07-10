@@ -23,26 +23,41 @@ Note that, there should be only one global lock.
 <dependency>
     <groupId>com.yusufaytas.dlock</groupId>
     <artifactId>dlock-spring</artifactId>
-    <version>0.1.0</version>
+    <version>0.1</version>
 </dependency>
 <dependency>
     <groupId>com.yusufaytas.dlock</groupId>
     <artifactId>dlock-jdbc</artifactId>
-    <version>0.1.0</version>
+    <version>0.1</version>
+</dependency>
+```
+or you can import all
+```xml
+<dependency>
+    <groupId>com.yusufaytas.dlock</groupId>
+    <artifactId>dlock-all</artifactId>
+    <version>0.1</version>
 </dependency>
 ```
 #### gradle
 ```groovy
-compile 'com.yusufaytas.dlock:dlock-spring:0.1.0'
-compile 'com.yusufaytas.dlock:dlock-jdbc:0.1.0'
+compile 'com.yusufaytas.dlock:dlock-spring:0.1'
+compile 'com.yusufaytas.dlock:dlock-jdbc:0.1'
+```
+or you can import all
+```groovy
+compile 'com.yusufaytas.dlock:dlock-all:0.1'
 ```
 ## Add a Interval Lock Support
 #### Spring Bean Config
 An example lock support for Postgres can be added as follows
 ```xml
+<!-- A bean for the lock implementation. Note that there should be only one global implementation-->
 <bean id="postgresLock" class="com.yusufaytas.dlock.jdbc.PostgresIntervalLock">
   <constructor-arg type="javax.sql.DataSource" ref="lockDataSource"/>
 </bean>
+<!-- The lock gets auto-registered to the registrar -->
+<bean id="lockRegistrar" class="com.yusufaytas.dlock.spring.IntervalLockRegistrar"/>
 ```
 #### Java Code
 ```java
@@ -53,5 +68,9 @@ public void exampleLock() {
 }
 ```
 # Lock Implementations
-## Postgres
-We insert into postgres if there doesn't exist a lock. 
+##Jdbc
+You need to execute the DDL at the target database with appropriate permissions to make lock work.
+### Postgres
+We insert into postgres if there doesn't exist a lock. Please checkout the Postgres DDL.
+### MySQL
+We get an exclusive lock on the lock table and insert a new lock if it a conflicting lock doesn't exit. Please checkout the MySQL DDL.
