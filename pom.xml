@@ -30,6 +30,7 @@
     <module>dlock-core</module>
     <module>dlock-spring</module>
     <module>dlock-jdbc</module>
+    <module>dlock-all</module>
     <module>dlock-examples</module>
   </modules>
 
