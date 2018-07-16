@@ -70,7 +70,7 @@ public void exampleLock() {
 ```
 # Lock Implementations
 ## Jdbc
-You need to execute the DDL at the target database with appropriate permissions to make lock work.
+You need to execute the DDL at the target database with appropriate permissions to make the lock work.
 ### Postgres
 We insert into postgres if there doesn't exist a lock. Please checkout the [Postgres DDL](https://github.com/yusufaytas/dlock/blob/master/dlock-jdbc/src/main/resources/ddls/postgres.ddl).
 ### MySQL
