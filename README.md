@@ -74,7 +74,7 @@ You need to execute the DDL at the target database with appropriate permissions 
 ### Postgres
 We insert into postgres if there doesn't exist a lock. Please checkout the [Postgres DDL](https://github.com/yusufaytas/dlock/blob/master/dlock-jdbc/src/main/resources/ddls/postgres.ddl).
 ### MySQL
-We get an exclusive lock on the lock table and insert a new lock if it a conflicting lock doesn't exit. Please checkout the [MySQL DDL](https://github.com/yusufaytas/dlock/blob/master/dlock-jdbc/src/main/resources/ddls/mysql.ddl).
+We get an exclusive lock on the lock table and insert a new lock if a conflicting lock doesn't exit. Please checkout the [MySQL DDL](https://github.com/yusufaytas/dlock/blob/master/dlock-jdbc/src/main/resources/ddls/mysql.ddl).
 # Contributing
 ## Compiling project
 ```java
