@@ -8,6 +8,7 @@ Feedback and pull-requests are welcome!
 + [Usage](#usage)
 + [Lock Implementations](#lock-implementations)
   - [Postgres](#postgres)
+  - [MySQL](#mysql)
 + [Contributing](#contributing)
 
 # Usage
@@ -69,11 +70,11 @@ public void exampleLock() {
 ```
 # Lock Implementations
 ## Jdbc
-You need to execute the DDL at the target database with appropriate permissions to make lock work.
+You need to execute the DDL at the target database with appropriate permissions to make the lock work.
 ### Postgres
 We insert into postgres if there doesn't exist a lock. Please checkout the [Postgres DDL](https://github.com/yusufaytas/dlock/blob/master/dlock-jdbc/src/main/resources/ddls/postgres.ddl).
 ### MySQL
-We get an exclusive lock on the lock table and insert a new lock if it a conflicting lock doesn't exit. Please checkout the [MySQL DDL](https://github.com/yusufaytas/dlock/blob/master/dlock-jdbc/src/main/resources/ddls/mysql.ddl).
+We get an exclusive lock on the lock table and insert a new lock if a conflicting lock doesn't exit. Please checkout the [MySQL DDL](https://github.com/yusufaytas/dlock/blob/master/dlock-jdbc/src/main/resources/ddls/mysql.ddl).
 # Contributing
 ## Compiling project
 ```java
