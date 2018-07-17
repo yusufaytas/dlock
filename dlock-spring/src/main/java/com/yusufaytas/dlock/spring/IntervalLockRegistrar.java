@@ -22,6 +22,8 @@ import com.yusufaytas.dlock.core.LockConfig;
 import com.yusufaytas.dlock.core.LockRegistry;
 import com.yusufaytas.dlock.core.UnreachableLockException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Optional;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -30,17 +32,23 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Aspect
 @Component
 public class IntervalLockRegistrar {
 
   private final static Logger logger = LoggerFactory.getLogger(IntervalLockRegistrar.class);
+  private final static String LOCK_OWNER_PROPERTY_NAME = "com.yusufaytas.dlock.owner";
+
+  @Autowired
+  private Environment env;
 
   @Autowired(required = false)
   public IntervalLockRegistrar(IntervalLock intervalLock) {
-    if(intervalLock == null){
+    if (intervalLock == null) {
       logger.warn("Couldn't find any IntervalLock bean to register.");
       return;
     }
@@ -65,11 +73,27 @@ public class IntervalLockRegistrar {
       if (!lock.isPresent()) {
         return true;
       }
-      LockConfig config = new LockConfig(tryLock.name(), tryLock.owner(), tryLock.lockFor());
+      LockConfig config = getLockConfigWithDefaults(tryLock);
       return lock.get().tryLock(config);
     } catch (UnreachableLockException e) {
       logger.error("Couldn't lock due to lock provider", e);
       return false;
+    }
+  }
+
+  private LockConfig getLockConfigWithDefaults(TryLock tryLock) {
+    String owner = env.getProperty(tryLock.owner(), tryLock.owner());
+    if (StringUtils.isEmpty(owner)) {
+      owner = env.getProperty(LOCK_OWNER_PROPERTY_NAME, getHostname());
+    }
+    return new LockConfig(tryLock.name(), owner, tryLock.lockFor());
+  }
+
+  private String getHostname() {
+    try {
+      return InetAddress.getLocalHost().getHostName();
+    } catch (UnknownHostException e) {
+      return "";
     }
   }
 }
