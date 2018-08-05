@@ -2,7 +2,7 @@ DLock
 ========
 [![Apache License 2](https://img.shields.io/badge/license-ASF2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.txt) [![Build Status](https://travis-ci.org/yusufaytas/dlock.png?branch=master)](https://travis-ci.org/yusufaytas/dlock)
 
-DLock is a library to get an interval lock. An Interval Lock is a lock where the acquirer acquires the lock for a certain amount of time. Once the lock is acquired, it won't be released till the interval ends.
+DLock is a library to get an interval lock. An Interval Lock is a lock where the acquirer acquires the lock for a certain amount of time. Once the lock is acquired, it won't be released till the interval ends. Note that, each of the Interval Lock implementations guarantees atomicity over processes and threads. The lock can only be acquired by only one process or thread at a time as expected. The implementations differ based on the technology.
 
 Feedback and pull-requests are welcome!
 + [Usage](#usage)
