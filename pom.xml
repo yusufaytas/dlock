@@ -141,7 +141,7 @@
           <properties>
             <owner>Yusuf Aytas</owner>
             <email>yusufaytas@gmail.com</email>
-            <project.inceptionYear>2018</project.inceptionYear>
+            <project.inceptionYear>2019</project.inceptionYear>
           </properties>
           <excludes>
             <exclude>**/README</exclude>
