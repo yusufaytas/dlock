@@ -78,5 +78,5 @@ We get an exclusive lock on the lock table and insert a new lock if a conflictin
 # Contributing
 ## Compiling project
 ```java
-mvn clean install -Dgpg.skip
+./mvnw clean install -Dgpg.skip
 ```

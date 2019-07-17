@@ -148,6 +148,10 @@
             <exclude>src/test/resources/**</exclude>
             <exclude>src/main/resources/**</exclude>
             <exclude>**/*.xml</exclude>
+            <exclude>.mvn/**</exclude>
+            <exclude>mvnw.cmd</exclude>
+            <exclude>mvnw</exclude>
+            <exclude>LICENSE</exclude>
           </excludes>
         </configuration>
         <executions>
