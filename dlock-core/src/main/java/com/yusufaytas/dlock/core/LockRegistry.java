@@ -34,6 +34,6 @@ public class LockRegistry {
   }
 
   public static Optional<IntervalLock> getLock() {
-    return Optional.of(LOCK_REFERENCE.get());
+    return Optional.ofNullable(LOCK_REFERENCE.get());
   }
 }
