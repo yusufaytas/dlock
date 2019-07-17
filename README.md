@@ -24,12 +24,12 @@ Note that, there should be only one global lock.
 <dependency>
     <groupId>com.yusufaytas</groupId>
     <artifactId>dlock-spring</artifactId>
-    <version>0.2</version>
+    <version>0.2.1</version>
 </dependency>
 <dependency>
     <groupId>com.yusufaytas</groupId>
     <artifactId>dlock-jdbc</artifactId>
-    <version>0.2</version>
+    <version>0.2.1</version>
 </dependency>
 ```
 or you can import all
@@ -37,17 +37,17 @@ or you can import all
 <dependency>
     <groupId>com.yusufaytas</groupId>
     <artifactId>dlock-all</artifactId>
-    <version>0.2</version>
+    <version>0.2.1</version>
 </dependency>
 ```
 #### gradle
 ```groovy
-compile 'com.yusufaytas:dlock-spring:0.2'
-compile 'com.yusufaytas:dlock-jdbc:0.2'
+compile 'com.yusufaytas:dlock-spring:0.2.1'
+compile 'com.yusufaytas:dlock-jdbc:0.2.1'
 ```
 or you can import all
 ```groovy
-compile 'com.yusufaytas:dlock-all:0.2'
+compile 'com.yusufaytas:dlock-all:0.2.1'
 ```
 ## Add an Interval Lock Support
 #### Spring Bean Config
