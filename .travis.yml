@@ -7,7 +7,8 @@ jdk:
 branches:
   only:
     - master
-
+    
+install: ./mvnw install -DskipTests -Dgpg.skip
 after_success:
   - ./mvnw clean test -Dgpg.skip
   - ./mvnw clean cobertura:cobertura coveralls:report -Dgpg.skip
