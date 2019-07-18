@@ -9,6 +9,6 @@ branches:
     - master
 
 after_success:
-  - mvn clean test -Dgpg.skip
-  - mvn clean cobertura:cobertura coveralls:report -Dgpg.skip
-  - mvn license:check
+  - ./mvnw clean test -Dgpg.skip
+  - ./mvnw clean cobertura:cobertura coveralls:report -Dgpg.skip
+  - ./mvnw license:check
