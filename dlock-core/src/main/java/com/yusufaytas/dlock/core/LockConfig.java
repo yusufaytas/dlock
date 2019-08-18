@@ -15,6 +15,8 @@
  */
 package com.yusufaytas.dlock.core;
 
+import java.util.Objects;
+
 /**
  * Configuration for distributed locks.
  */
@@ -23,17 +25,18 @@ public class LockConfig {
   /**
    * The name of the lock
    */
-  private String name;
+  private final String name;
   /**
    * The owner of the lock
    */
-  private String owner;
+  private final String owner;
   /**
    * The duration to hold the lock
    */
-  private long duration;
+  private final long duration;
 
-  public LockConfig(String name, String owner, long duration) {
+  public LockConfig(final String name, final String owner, final long duration) {
+    Objects.requireNonNull(name, "Lock name can't bee null");
     this.name = name;
     this.owner = owner;
     this.duration = duration;

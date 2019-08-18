@@ -17,7 +17,6 @@ package com.yusufaytas.dlock.jdbc;
 
 import com.yusufaytas.dlock.core.LockConfig;
 import com.yusufaytas.dlock.core.UnreachableLockException;
-import javax.sql.DataSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -25,6 +24,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.sql.DataSource;
+
+/**
+ * A full lock on the table needs to be acquired to provide safety
+ */
 public class MySQLIntervalLock extends JdbcIntervalLock {
 
   private final String lockTableSql;
@@ -118,8 +122,8 @@ public class MySQLIntervalLock extends JdbcIntervalLock {
   @Override
   public boolean tryLock(final LockConfig lockConfig) throws UnreachableLockException {
     return transactionTemplate.execute(transactionStatus -> {
-      MapSqlParameterSource parameterSource = getParams(lockConfig);
-      KeyHolder keyHolder = new GeneratedKeyHolder();
+      final MapSqlParameterSource parameterSource = getParams(lockConfig);
+      final KeyHolder keyHolder = new GeneratedKeyHolder();
       try {
         jdbcTemplate.update(lockTableSql, parameterSource);
         jdbcTemplate.update(tryLockSql, parameterSource, keyHolder);

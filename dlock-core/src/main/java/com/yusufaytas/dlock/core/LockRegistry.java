@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A class to store lock.
+ * A class to store the global lock.
  */
 public class LockRegistry {
 

@@ -17,12 +17,17 @@ package com.yusufaytas.dlock.jdbc;
 
 import com.yusufaytas.dlock.core.LockConfig;
 import com.yusufaytas.dlock.core.UnreachableLockException;
-import javax.sql.DataSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import javax.sql.DataSource;
+
+/**
+ * A postgres implementation for interval lock. A full table lock isn't required as postgres is able to provide the same
+ * safety mechanism through the constraints.
+ */
 public class PostgresIntervalLock extends JdbcIntervalLock {
 
   public PostgresIntervalLock(DataSource dataSource) {
@@ -78,8 +83,8 @@ public class PostgresIntervalLock extends JdbcIntervalLock {
 
   @Override
   public boolean tryLock(final LockConfig lockConfig) throws UnreachableLockException {
-    MapSqlParameterSource parameterSource = getParams(lockConfig);
-    KeyHolder keyHolder = new GeneratedKeyHolder();
+    final MapSqlParameterSource parameterSource = getParams(lockConfig);
+    final KeyHolder keyHolder = new GeneratedKeyHolder();
     jdbcTemplate.update(tryLockSql, parameterSource, keyHolder);
     return !(keyHolder.getKeys() == null || keyHolder.getKeys().isEmpty());
   }

@@ -21,10 +21,6 @@ import com.yusufaytas.dlock.core.IntervalLock;
 import com.yusufaytas.dlock.core.LockConfig;
 import com.yusufaytas.dlock.core.LockRegistry;
 import com.yusufaytas.dlock.core.UnreachableLockException;
-import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Optional;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -35,6 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Optional;
 
 @Aspect
 @Component
@@ -58,22 +59,22 @@ public class IntervalLockRegistrar {
   @Around("@annotation(com.yusufaytas.dlock.TryLock)")
   public void tryLock(ProceedingJoinPoint joinPoint)
       throws Throwable {
-    MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-    Method method = signature.getMethod();
-    TryLock tryLock = method.getAnnotation(TryLock.class);
+    final MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+    final Method method = signature.getMethod();
+    final TryLock tryLock = method.getAnnotation(TryLock.class);
 
     if (shouldProceed(tryLock)) {
       joinPoint.proceed();
     }
   }
 
-  private boolean shouldProceed(TryLock tryLock) {
+  private boolean shouldProceed(final TryLock tryLock) {
     try {
-      Optional<IntervalLock> lock = LockRegistry.getLock();
+      final Optional<IntervalLock> lock = LockRegistry.getLock();
       if (!lock.isPresent()) {
         return true;
       }
-      LockConfig config = getLockConfigWithDefaults(tryLock);
+      final LockConfig config = getLockConfigWithDefaults(tryLock);
       return lock.get().tryLock(config);
     } catch (UnreachableLockException e) {
       logger.error("Couldn't lock due to lock provider", e);
@@ -81,7 +82,7 @@ public class IntervalLockRegistrar {
     }
   }
 
-  private LockConfig getLockConfigWithDefaults(TryLock tryLock) {
+  private LockConfig getLockConfigWithDefaults(final TryLock tryLock) {
     String owner = env.getProperty(tryLock.owner(), tryLock.owner());
     if (StringUtils.isEmpty(owner)) {
       owner = env.getProperty(LOCK_OWNER_PROPERTY_NAME, getHostname());

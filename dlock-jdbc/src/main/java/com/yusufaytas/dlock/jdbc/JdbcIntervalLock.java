@@ -17,9 +17,10 @@ package com.yusufaytas.dlock.jdbc;
 
 import com.yusufaytas.dlock.core.IntervalLock;
 import com.yusufaytas.dlock.core.LockConfig;
-import javax.sql.DataSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import javax.sql.DataSource;
 
 public abstract class JdbcIntervalLock implements IntervalLock {
 
@@ -45,7 +46,7 @@ public abstract class JdbcIntervalLock implements IntervalLock {
     this.tryLockSql = buildTryLockSql(tableConfig);
   }
 
-  protected MapSqlParameterSource getParams(LockConfig lockConfig) {
+  protected MapSqlParameterSource getParams(final LockConfig lockConfig) {
     MapSqlParameterSource parameterSource = new MapSqlParameterSource();
     parameterSource.addValue(tableConfig.getName(), lockConfig.getName());
     parameterSource.addValue(tableConfig.getOwner(), lockConfig.getOwner());
