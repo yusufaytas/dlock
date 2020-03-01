@@ -1,7 +1,4 @@
 language: java
-env:
-  global:
-    - MAVEN_OPTS="-Dgpg.skip"
 
 jdk:
   - openjdk8
@@ -11,9 +8,9 @@ branches:
   only:
     - master
 
-install:
-  - ./mvnw clean install
+script:
+  - ./mvnw clean install -Dgpg.skip
 
 after_success:
-  - ./mvnw clean test
-  - ./mvnw license:check
+  - ./mvnw clean test -Dgpg.skip
+  - ./mvnw license:check -Dgpg.skip
