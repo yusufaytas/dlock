@@ -37,9 +37,8 @@ import org.springframework.stereotype.Component;
 public class SpringLockRegistrar extends AbstractLockRegistrar {
 
   private final static Logger logger = LoggerFactory.getLogger(SpringLockRegistrar.class);
-  private final static String LOCK_OWNER_PROPERTY_NAME = "com.yusufaytas.dlock.owner";
 
-  @Value("${" + LOCK_OWNER_PROPERTY_NAME + "}")
+  @Value("${com.yusufaytas.dlock.owner:#{null}}")
   private String ownerFromProperty;
 
   @Autowired(required = false)
@@ -65,7 +64,7 @@ public class SpringLockRegistrar extends AbstractLockRegistrar {
 
   @Override
   protected String getOwner(final TryLock tryLock) {
-    if (tryLock.owner().isEmpty() && !ownerFromProperty.equals(LOCK_OWNER_PROPERTY_NAME)) {
+    if (tryLock.owner().isEmpty() && ownerFromProperty != null) {
       return ownerFromProperty;
     }
     return super.getOwner(tryLock);
