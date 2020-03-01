@@ -38,6 +38,12 @@ public class SpringPostgresLockExample {
   @Scheduled(cron = "*/1 * * * * *")
   @TryLock(name = "postgres", owner = "dlock", lockFor = ONE_MINUTE)
   public void exampleLock() {
-    System.out.println("lock works");
+    System.out.println("postgres lock works");
+  }
+
+  @Scheduled(cron = "*/1 * * * * *")
+  @TryLock(name = "springPropertyLock", lockFor = ONE_MINUTE)
+  public void springPropertyLock() {
+    System.out.println("spring property lock works");
   }
 }

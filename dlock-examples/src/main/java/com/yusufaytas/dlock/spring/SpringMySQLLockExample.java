@@ -36,6 +36,6 @@ public class SpringMySQLLockExample {
   @Scheduled(cron = "*/1 * * * * *")
   @TryLock(name = "mysql", owner = "dlock", lockFor = 1)
   public void exampleLock() {
-    System.out.println("lock works");
+    System.out.println("mysql lock works");
   }
 }

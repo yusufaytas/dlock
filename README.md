@@ -58,7 +58,7 @@ An example lock support for Postgres can be added as follows
   <constructor-arg type="javax.sql.DataSource" ref="lockDataSource"/>
 </bean>
 <!-- The lock gets auto-registered to the registrar -->
-<bean id="lockRegistrar" class="com.yusufaytas.dlock.spring.IntervalLockRegistrar"/>
+<bean id="lockRegistrar" class="com.yusufaytas.dlock.spring.SpringLockRegistrar"/>
 ```
 #### Java Code
 ```java
@@ -77,6 +77,10 @@ We insert into postgres if there doesn't exist a lock. Please checkout the [Post
 We get an exclusive lock on the lock table and insert a new lock if a conflicting lock doesn't exit. Please checkout the [MySQL DDL](https://github.com/yusufaytas/dlock/blob/master/dlock-jdbc/src/main/resources/ddls/mysql.ddl).
 # Contributing
 ## Compiling project
-```java
+```shell script
 ./mvnw clean install -Dgpg.skip
+```
+## License Header
+```shell script
+./mvnw license:format -Dgpg.skip
 ```

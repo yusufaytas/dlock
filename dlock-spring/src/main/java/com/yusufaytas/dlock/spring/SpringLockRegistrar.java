@@ -16,11 +16,12 @@
 package com.yusufaytas.dlock.spring;
 
 
+import static com.yusufaytas.dlock.core.LockRegistry.setLock;
+
 import com.yusufaytas.dlock.TryLock;
+import com.yusufaytas.dlock.core.AbstractLockRegistrar;
 import com.yusufaytas.dlock.core.IntervalLock;
-import com.yusufaytas.dlock.core.LockConfig;
-import com.yusufaytas.dlock.core.LockRegistry;
-import com.yusufaytas.dlock.core.UnreachableLockException;
+import java.lang.reflect.Method;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -28,32 +29,26 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
-import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Optional;
 
 @Aspect
 @Component
-public class IntervalLockRegistrar {
+public class SpringLockRegistrar extends AbstractLockRegistrar {
 
-  private final static Logger logger = LoggerFactory.getLogger(IntervalLockRegistrar.class);
+  private final static Logger logger = LoggerFactory.getLogger(SpringLockRegistrar.class);
   private final static String LOCK_OWNER_PROPERTY_NAME = "com.yusufaytas.dlock.owner";
 
-  @Autowired
-  private Environment env;
+  @Value("${" + LOCK_OWNER_PROPERTY_NAME + "}")
+  private String ownerFromProperty;
 
   @Autowired(required = false)
-  public IntervalLockRegistrar(IntervalLock intervalLock) {
+  public SpringLockRegistrar(IntervalLock intervalLock) {
     if (intervalLock == null) {
       logger.warn("Couldn't find any IntervalLock bean to register.");
       return;
     }
-    LockRegistry.setLock(intervalLock);
+    setLock(intervalLock);
   }
 
   @Around("@annotation(com.yusufaytas.dlock.TryLock)")
@@ -68,33 +63,12 @@ public class IntervalLockRegistrar {
     }
   }
 
-  private boolean shouldProceed(final TryLock tryLock) {
-    try {
-      final Optional<IntervalLock> lock = LockRegistry.getLock();
-      if (!lock.isPresent()) {
-        return true;
-      }
-      final LockConfig config = getLockConfigWithDefaults(tryLock);
-      return lock.get().tryLock(config);
-    } catch (UnreachableLockException e) {
-      logger.error("Couldn't lock due to lock provider", e);
-      return false;
+  @Override
+  protected String getOwner(final TryLock tryLock) {
+    if (tryLock.owner().isEmpty() && !ownerFromProperty.equals(LOCK_OWNER_PROPERTY_NAME)) {
+      return ownerFromProperty;
     }
+    return super.getOwner(tryLock);
   }
 
-  private LockConfig getLockConfigWithDefaults(final TryLock tryLock) {
-    String owner = env.getProperty(tryLock.owner(), tryLock.owner());
-    if (StringUtils.isEmpty(owner)) {
-      owner = env.getProperty(LOCK_OWNER_PROPERTY_NAME, getHostname());
-    }
-    return new LockConfig(tryLock.name(), owner, tryLock.lockFor());
-  }
-
-  private String getHostname() {
-    try {
-      return InetAddress.getLocalHost().getHostName();
-    } catch (UnknownHostException e) {
-      return "";
-    }
-  }
 }
