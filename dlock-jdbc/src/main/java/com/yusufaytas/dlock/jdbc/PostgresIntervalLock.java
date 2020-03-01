@@ -56,7 +56,7 @@ public class PostgresIntervalLock extends JdbcIntervalLock {
   }
 
   @Override
-  protected String buildTryLockSql(TableConfig tableConfig) {
+  protected String buildTryLockSql(final TableConfig tableConfig) {
     return new StringBuilder().append("INSERT INTO ")
         .append(getSafeName(tableConfig.getSchema()))
         .append(".")
