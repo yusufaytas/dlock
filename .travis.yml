@@ -9,8 +9,8 @@ branches:
     - master
 
 script:
-  - ./mvnw clean install -Dgpg.skip
+  - ./mvnw clean install
 
 after_success:
-  - ./mvnw clean test -Dgpg.skip
-  - ./mvnw license:check -Dgpg.skip
+  - ./mvnw clean test
+  - ./mvnw license:check
