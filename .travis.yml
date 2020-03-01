@@ -1,15 +1,14 @@
 language: java
 
 jdk:
-  - oraclejdk8
+  - openjdk8
 
 # whitelist
 branches:
   only:
     - master
-    
-install: ./mvnw install -DskipTests -Dgpg.skip
+
 after_success:
   - ./mvnw clean test -Dgpg.skip
-  - ./mvnw clean cobertura:cobertura coveralls:report -Dgpg.skip
+  - ./mvnw clean test jacoco:report coveralls:report
   - ./mvnw license:check
